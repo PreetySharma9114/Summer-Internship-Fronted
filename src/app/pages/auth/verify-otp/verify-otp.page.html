@@ -1,0 +1,40 @@
+<ion-content>
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="brand">CreatorHub</div>
+
+      <h1>Verify Email</h1>
+
+      <p>Enter the verification code sent to your email.</p>
+
+      <form [formGroup]="verifyOtpForm" (ngSubmit)="verifyOtp()">
+        <div class="input-group">
+          <ion-input-otp length="6" formControlName="otp"> </ion-input-otp>
+
+          @if (verifyOtpForm.get('otp')?.touched && verifyOtpForm.get('otp')?.invalid) {
+            <small> Enter a valid OTP </small>
+          }
+        </div>
+
+        <ion-button expand="block" type="submit" [disabled]="loading">
+          @if (loading) {
+            <ion-spinner name="crescent"> </ion-spinner>
+          } @else {
+            Verify OTP
+          }
+        </ion-button>
+      </form>
+      <div class="bottom-text">
+        Didn't receive the code?
+
+        <a role="button" tabindex="0" (click)="resendOtp()">
+          @if (resendLoading) {
+            Resending...
+          } @else {
+            Resend Code
+          }
+        </a>
+      </div>
+    </div>
+  </div>
+</ion-content>

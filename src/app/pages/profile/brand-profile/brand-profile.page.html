@@ -1,0 +1,81 @@
+<ion-content>
+  <div class="profile-page">
+    <div class="profile-wrapper">
+      <div class="brand">CreatorHub</div>
+
+      <div class="profile-header">
+        <h1>Complete Brand Profile</h1>
+
+        <p>Tell creators about your brand.</p>
+      </div>
+
+      <form [formGroup]="brandProfileForm" (ngSubmit)="submitProfile()">
+        <div class="upload-box">
+          @if (logoPreview) {
+            <img [src]="logoPreview" class="profile-preview" />
+          }
+
+          <input type="file" accept="image/*" (change)="onLogoChange($event)" />
+        </div>
+
+        <div class="profile-grid">
+          <div class="input-group">
+            <ion-item lines="none">
+              <ion-input placeholder="Brand Name" formControlName="brandName"> </ion-input>
+            </ion-item>
+
+            @if (brandProfileForm.get('brandName')?.touched && brandProfileForm.get('brandName')?.invalid) {
+              <small> Brand name is required </small>
+            }
+          </div>
+
+          <div class="input-group">
+            <ion-item lines="none">
+              <ion-input placeholder="Website" formControlName="website"> </ion-input>
+            </ion-item>
+
+            @if (brandProfileForm.get('website')?.touched && brandProfileForm.get('website')?.invalid) {
+              <small> Website is required </small>
+            }
+          </div>
+
+          <div class="input-group full-width">
+            <ion-item lines="none">
+              <ion-textarea placeholder="Brand Description" formControlName="description"> </ion-textarea>
+            </ion-item>
+
+            @if (brandProfileForm.get('description')?.touched && brandProfileForm.get('description')?.invalid) {
+              <small> Description is required </small>
+            }
+          </div>
+
+          <div class="input-group">
+            <ion-item lines="none">
+              <ion-select placeholder="Select Industry" formControlName="industry">
+                @for (industry of industries; track industry) {
+                  <ion-select-option [value]="industry">
+                    {{ industry }}
+                  </ion-select-option>
+                }
+              </ion-select>
+            </ion-item>
+          </div>
+
+          <div class="input-group">
+            <ion-item lines="none">
+              <ion-input placeholder="Instagram Username" formControlName="instagramUsername"> </ion-input>
+            </ion-item>
+          </div>
+        </div>
+
+        <ion-button expand="block" type="submit" [disabled]="loading">
+          @if (loading) {
+            <ion-spinner name="crescent"> </ion-spinner>
+          } @else {
+            Complete Profile
+          }
+        </ion-button>
+      </form>
+    </div>
+  </div>
+</ion-content>

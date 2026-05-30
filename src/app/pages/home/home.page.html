@@ -1,0 +1,33 @@
+<ion-content>
+  <div class="home-container">
+    @if (loading) {
+      <div class="loader-container">
+        <ion-spinner name="crescent"> </ion-spinner>
+      </div>
+    } @else {
+      @if (user) {
+        <div class="home-card">
+          <h1>Welcome</h1>
+
+          <h2>
+            {{ user.email }}
+          </h2>
+
+          @if (user.role === userRole.INFLUENCER) {
+            <div class="dashboard-section">
+              <h3>Influencer Dashboard</h3>
+
+              <p>Manage collaborations, campaigns and analytics.</p>
+            </div>
+          } @else {
+            <div class="dashboard-section">
+              <h3>Brand Dashboard</h3>
+
+              <p>Manage campaigns, creators and partnerships.</p>
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+</ion-content>

@@ -1,0 +1,15 @@
+export enum BrandIndustry {
+  FASHION = 'FASHION',
+
+  BEAUTY = 'BEAUTY',
+
+  FITNESS = 'FITNESS',
+
+  TECHNOLOGY = 'TECHNOLOGY',
+
+  FOOD = 'FOOD',
+
+  TRAVEL = 'TRAVEL',
+
+  EDUCATION = 'EDUCATION',
+}

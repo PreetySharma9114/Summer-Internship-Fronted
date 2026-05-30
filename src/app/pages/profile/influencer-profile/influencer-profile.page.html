@@ -1,0 +1,89 @@
+<ion-content>
+  <div class="profile-page">
+    <div class="profile-wrapper">
+      <div class="brand">CreatorHub</div>
+
+      <h1>Complete Your Profile</h1>
+
+      <p>Help brands discover and connect with you.</p>
+
+      <form [formGroup]="influencerProfileForm" (ngSubmit)="submitProfile()">
+        <div class="upload-box">
+          @if (imagePreview) {
+            <img [src]="imagePreview" class="profile-preview" />
+          }
+
+          <input type="file" accept="image/*" (change)="onFileChange($event)" />
+        </div>
+
+        <div class="input-group">
+          <ion-item lines="none">
+            <ion-input placeholder="Full Name" formControlName="fullName"> </ion-input>
+          </ion-item>
+
+          @if (influencerProfileForm.get('fullName')?.touched && influencerProfileForm.get('fullName')?.invalid) {
+            <small> Full name is required </small>
+          }
+        </div>
+
+        <div class="input-group">
+          <ion-item lines="none">
+            <ion-input placeholder="Username" formControlName="username"> </ion-input>
+          </ion-item>
+
+          @if (influencerProfileForm.get('username')?.touched && influencerProfileForm.get('username')?.invalid) {
+            <small> Username is required </small>
+          }
+        </div>
+
+        <div class="input-group">
+          <ion-item lines="none">
+            <ion-textarea placeholder="Tell brands about yourself" formControlName="bio"> </ion-textarea>
+          </ion-item>
+
+          @if (influencerProfileForm.get('bio')?.touched && influencerProfileForm.get('bio')?.invalid) {
+            <small> Bio is required </small>
+          }
+        </div>
+
+        <div class="input-group">
+          <ion-item lines="none">
+            <ion-select placeholder="Select Niche" formControlName="niche">
+              @for (niche of niches; track niche) {
+                <ion-select-option [value]="niche">
+                  {{ niche }}
+                </ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+        </div>
+
+        <div class="input-group">
+          <ion-item lines="none">
+            <ion-input placeholder="Instagram Username" formControlName="instagramUsername"> </ion-input>
+          </ion-item>
+        </div>
+
+        <div class="input-group">
+          <ion-item lines="none">
+            <ion-input placeholder="YouTube Username" formControlName="youtubeUsername"> </ion-input>
+          </ion-item>
+        </div>
+
+        <div class="input-group">
+          <ion-item lines="none">
+            <ion-input type="number" placeholder="Followers Count" formControlName="followersCount"> </ion-input>
+          </ion-item>
+        </div>
+
+        <ion-button expand="block" type="submit" [disabled]="loading">
+          @if (loading) {
+            <ion-spinner name="crescent"> </ion-spinner>
+          } @else {
+            Complete Profile
+          }
+        </ion-button>
+      </form>
+    </div>
+  </div>
+</ion-content>
