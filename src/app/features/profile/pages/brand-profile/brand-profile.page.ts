@@ -19,12 +19,13 @@ import { Router } from '@angular/router';
 
 import { finalize } from 'rxjs';
 
-import { ToastService } from '../../../core/services/toast.service';
+import { ToastService } from '../../../../core/services/toast.service';
 
-import { ProfileService } from '../../../core/services/profile.service';
+import { ProfileService } from '../../../../core/services/profile.service';
 
-import { BrandIndustry } from '../../../core/enums/brand-industry.enum';
-
+import { BrandIndustry } from '../../enums/brand-industry.enum';
+import { BrandProfile } from '../../interfaces/brand-profile.interface';
+import { FileUploadHelper } from '../../../../shared/helpers/file-upload.helper';
 @Component({
   selector: 'app-brand-profile',
 
@@ -89,13 +90,9 @@ export class BrandProfilePage implements OnInit {
     if (input.files && input.files.length > 0) {
       this.selectedLogo = input.files[0];
 
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        this.logoPreview = reader.result as string;
-      };
-
-      reader.readAsDataURL(this.selectedLogo);
+      FileUploadHelper.generatePreview(this.selectedLogo, (preview) => {
+        this.logoPreview = preview;
+      });
     }
   }
 
@@ -107,41 +104,24 @@ export class BrandProfilePage implements OnInit {
     }
 
     this.loading = true;
-
-    const formData = new FormData();
-
-    Object.entries(this.brandProfileForm.value).forEach(([key, value]) => {
-      formData.append(key, String(value));
-    });
-
-    if (this.selectedLogo) {
-      formData.append('logo', this.selectedLogo);
-    }
+    const profile: BrandProfile = this.brandProfileForm.getRawValue();
 
     this.profileService
-      .createBrandProfile(formData)
+      .createBrandProfile(profile, this.selectedLogo ?? undefined)
       .pipe(
         finalize(() => {
           this.loading = false;
         }),
       )
       .subscribe({
-        next: () => {
-          this.toastService
-            .showSuccessToast('Profile completed successfully')
-            .subscribe((toast) => {
-              toast.present();
-            });
-
-          this.router.navigate(['/home']);
+        next: async () => {
+          await this.toastService.showSuccessToast('Profile completed successfully');
         },
 
-        error: (error) => {
+        error: async (error) => {
           const message = error?.error?.message ?? 'Failed to complete profile';
 
-          this.toastService.showErrorToast(message).subscribe((toast) => {
-            toast.present();
-          });
+          await this.toastService.showErrorToast(message);
         },
       });
   }

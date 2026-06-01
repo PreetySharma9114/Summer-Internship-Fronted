@@ -2,8 +2,6 @@ import { inject, Injectable } from '@angular/core';
 
 import { ToastController, ToastOptions } from '@ionic/angular';
 
-import { from, Observable } from 'rxjs';
-
 import { APP_CONSTANTS } from '../constants/app.constants';
 
 @Injectable({
@@ -12,47 +10,57 @@ import { APP_CONSTANTS } from '../constants/app.constants';
 export class ToastService {
   private toastController = inject(ToastController);
 
-  showSuccessToast(message: string): Observable<HTMLIonToastElement> {
-    return this.showToast({
+  async showSuccessToast(
+    message: string,
+  ): Promise<void> {
+    await this.showToast({
       message,
-
       color: 'success',
     });
   }
 
-  showErrorToast(message: string): Observable<HTMLIonToastElement> {
-    return this.showToast({
+  async showErrorToast(
+    message: string,
+  ): Promise<void> {
+    await this.showToast({
       message,
-
       color: 'danger',
     });
   }
 
-  showWarningToast(message: string): Observable<HTMLIonToastElement> {
-    return this.showToast({
+  async showWarningToast(
+    message: string,
+  ): Promise<void> {
+    await this.showToast({
       message,
-
       color: 'warning',
     });
   }
 
-  showInfoToast(message: string): Observable<HTMLIonToastElement> {
-    return this.showToast({
+  async showInfoToast(
+    message: string,
+  ): Promise<void> {
+    await this.showToast({
       message,
-
       color: 'primary',
     });
   }
 
-  private showToast(options: ToastOptions): Observable<HTMLIonToastElement> {
-    return from(
-      this.toastController.create({
+  private async showToast(
+    options: ToastOptions,
+  ): Promise<void> {
+    const toast =
+      await this.toastController.create({
         ...options,
+        duration:
+          APP_CONSTANTS.TOAST_DURATION,
+        position:
+          APP_CONSTANTS.TOAST_POSITION as
+            | 'top'
+            | 'bottom'
+            | 'middle',
+      });
 
-        duration: APP_CONSTANTS.TOAST_DURATION,
-
-        position: APP_CONSTANTS.TOAST_POSITION as 'top' | 'bottom' | 'middle',
-      }),
-    );
+    await toast.present();
   }
 }

@@ -2,60 +2,27 @@ import { inject, Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 
-import { Router } from '@angular/router';
-
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 
-import { AuthResponse } from '../interfaces/auth-response.interface';
+import { User } from '../../shared/interfaces/user.interface';
+import { Session } from '../../features/auth/interfaces/session.interface';
+import { RegisterDto } from '../../features/auth/dto/register.dto';
 
-import { User } from '../interfaces/user.interface';
+import { LoginDto } from '../../features/auth/dto/login.dto';
 
-import { Session } from '../interfaces/session.interface';
-
-import { UserRole } from '../enums/user-role.enum';
-
-import { ProfileStatus } from '../enums/profile-status.enum';
-
-export interface RegisterDto {
-  email: string;
-
-  role: UserRole;
-}
-
-export interface VerifyOtpDto {
-  id: string;
-
-  otp: string;
-}
-
-export interface CreatePasswordDto {
-  id: string;
-
-  password: string;
-
-  confirmPassword: string;
-}
-
-export interface LoginDto {
-  email: string;
-
-  password: string;
-}
-
+import { VerifyOtpDto } from '../../features/auth/dto/verify-otp.dto';
+import { STORAGE_KEYS } from '../constants/app.constants';
+import { CreatePasswordDto } from '../../features/auth/dto/create-password.dto';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
-
-  private router = inject(Router);
-
   private apiUrl = `${environment.apiUrl}/auth`;
 
-  private readonly SESSION_KEY = 'creatorhub_session';
-
+  private readonly SESSION_KEY = STORAGE_KEYS.SESSION;
   private sessionSubject = new BehaviorSubject<Session | null>(null);
 
   session$ = this.sessionSubject.asObservable();
@@ -92,16 +59,14 @@ export class AuthService {
     }>(`${this.apiUrl}/create-password`, data);
   }
 
-  login(data: LoginDto): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data).pipe(
+  login(data: LoginDto): Observable<Session> {
+    return this.http.post<Session>(`${this.apiUrl}/login`, data).pipe(
       tap((response) => {
         this.saveSession({
           token: response.token,
 
           user: response.user,
         });
-
-        this.handleProfileNavigation(response.user);
       }),
     );
   }
@@ -128,8 +93,6 @@ export class AuthService {
     this.sessionSubject.next(null);
 
     this.currentUserSubject.next(null);
-
-    this.router.navigate(['/login']);
   }
 
   private restoreSession(): void {
@@ -139,11 +102,14 @@ export class AuthService {
       return;
     }
 
-    const session: Session = JSON.parse(storedSession);
+    try {
+      const session: Session = JSON.parse(storedSession);
 
-    this.sessionSubject.next(session);
-
-    this.currentUserSubject.next(session.user);
+      this.sessionSubject.next(session);
+      this.currentUserSubject.next(session.user);
+    } catch {
+      this.logout();
+    }
   }
 
   private saveSession(session: Session): void {
@@ -152,21 +118,5 @@ export class AuthService {
     this.sessionSubject.next(session);
 
     this.currentUserSubject.next(session.user);
-  }
-
-  private handleProfileNavigation(user: User): void {
-    if (user.profileStatus === ProfileStatus.INCOMPLETE) {
-      if (user.role === UserRole.INFLUENCER) {
-        this.router.navigate(['/influencer-profile']);
-
-        return;
-      }
-
-      this.router.navigate(['/brand-profile']);
-
-      return;
-    }
-
-    this.router.navigate(['/home']);
   }
 }

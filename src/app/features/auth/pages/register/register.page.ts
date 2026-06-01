@@ -18,11 +18,12 @@ import {
 
 import { finalize } from 'rxjs';
 
-import { AuthService, RegisterDto } from '../../../core/services/auth.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
-import { ToastService } from '../../../core/services/toast.service';
+import { RegisterDto } from '../../dto/register.dto';
+import { ToastService } from '../../../../core/services/toast.service';
 
-import { UserRole } from '../../../core/enums/user-role.enum';
+import { UserRole } from '../../enums/user-role.enum';
 
 @Component({
   selector: 'app-register',
@@ -81,7 +82,7 @@ export class RegisterPage implements OnInit {
     this.loading = true;
 
     const payload: RegisterDto = this.registerForm.value;
-console.log('REGISTER PAYLOAD', payload);
+    console.log('REGISTER PAYLOAD', payload);
     this.authService
       .register(payload)
       .pipe(
@@ -90,10 +91,8 @@ console.log('REGISTER PAYLOAD', payload);
         }),
       )
       .subscribe({
-        next: (response) => {
-          this.toastService.showSuccessToast('OTP sent successfully').subscribe((toast) => {
-            toast.present();
-          });
+        next: async (response) => {
+          await this.toastService.showSuccessToast('OTP sent successfully');
 
           this.router.navigate(['/verify-otp'], {
             queryParams: {
@@ -102,12 +101,10 @@ console.log('REGISTER PAYLOAD', payload);
           });
         },
 
-        error: (error) => {
+        error: async (error) => {
           const message = error?.error?.message ?? 'Registration failed';
 
-          this.toastService.showErrorToast(message).subscribe((toast) => {
-            toast.present();
-          });
+          await this.toastService.showErrorToast(message);
         },
       });
   }

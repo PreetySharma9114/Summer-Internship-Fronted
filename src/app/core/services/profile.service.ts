@@ -6,9 +6,9 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 
-import { InfluencerProfile } from '../interfaces/influencer-profile.interface';
+import { InfluencerProfile } from '../../features/profile/interfaces/influencer-profile.interface';
 
-import { BrandProfile } from '../interfaces/brand-profile.interface';
+import { BrandProfile } from '../../features/profile/interfaces/brand-profile.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -26,18 +26,38 @@ export class ProfileService {
 
   brandProfile$ = this.brandProfileSubject.asObservable();
 
-  createInfluencerProfile(formData: FormData): Observable<InfluencerProfile> {
+  createInfluencerProfile(profile: InfluencerProfile, image?: File): Observable<InfluencerProfile> {
+    const formData = new FormData();
+
+    Object.entries(profile).forEach(([key, value]) => {
+      formData.append(key, String(value));
+    });
+
+    if (image) {
+      formData.append('profileImage', image);
+    }
+
     return this.http.post<InfluencerProfile>(`${this.apiUrl}/influencer`, formData).pipe(
-      tap((profile) => {
-        this.influencerProfileSubject.next(profile);
+      tap((response) => {
+        this.influencerProfileSubject.next(response);
       }),
     );
   }
 
-  createBrandProfile(formData: FormData): Observable<BrandProfile> {
+  createBrandProfile(profile: BrandProfile, logo?: File): Observable<BrandProfile> {
+    const formData = new FormData();
+
+    Object.entries(profile).forEach(([key, value]) => {
+      formData.append(key, String(value));
+    });
+
+    if (logo) {
+      formData.append('logo', logo);
+    }
+
     return this.http.post<BrandProfile>(`${this.apiUrl}/brand`, formData).pipe(
-      tap((profile) => {
-        this.brandProfileSubject.next(profile);
+      tap((response) => {
+        this.brandProfileSubject.next(response);
       }),
     );
   }

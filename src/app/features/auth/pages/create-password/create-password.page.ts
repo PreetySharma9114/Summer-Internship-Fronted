@@ -17,11 +17,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { finalize } from 'rxjs';
 
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
-import { ToastService } from '../../../core/services/toast.service';
+import { ToastService } from '../../../../core/services/toast.service';
 
-import { CustomValidators } from '../../../core/validators/custom.validators';
+import { CustomValidators } from '../../../../shared/validators/custom.validators';
 
 @Component({
   selector: 'app-create-password',
@@ -104,20 +104,15 @@ export class CreatePasswordPage implements OnInit {
         }),
       )
       .subscribe({
-        next: () => {
-          this.toastService.showSuccessToast('Password created successfully').subscribe((toast) => {
-            toast.present();
-          });
-
+        next: async () => {
+          await this.toastService.showSuccessToast('Password created successfully');
           this.router.navigate(['/login']);
         },
 
-        error: (error) => {
+        error: async (error) => {
           const message = error?.error?.message ?? 'Failed to create password';
 
-          this.toastService.showErrorToast(message).subscribe((toast) => {
-            toast.present();
-          });
+          await this.toastService.showErrorToast(message);
         },
       });
   }

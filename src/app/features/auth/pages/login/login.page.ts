@@ -17,9 +17,10 @@ import {
 
 import { finalize } from 'rxjs';
 
-import { AuthService, LoginDto } from '../../../core/services/auth.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
-import { ToastService } from '../../../core/services/toast.service';
+import { LoginDto } from '../../dto/login.dto';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -83,22 +84,17 @@ export class LoginPage implements OnInit {
         }),
       )
       .subscribe({
-        next: () => {
-          this.toastService.showSuccessToast('Login successful').subscribe((toast) => {
-            toast.present();
-          });
+        next:async () => {
+          await this.toastService.showSuccessToast('Login successful');
         },
 
-        error: (error) => {
+        error: async(error) => {
           console.log('LOGIN ERROR:', error);
 
           console.log('LOGIN ERROR BODY:', JSON.stringify(error.error, null, 2));
 
           const message = error?.error?.message ?? 'Login failed';
-
-          this.toastService.showErrorToast(message).subscribe((toast) => {
-            toast.present();
-          });
+          await this.toastService.showErrorToast(message);
         },
       });
   }

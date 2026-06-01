@@ -14,60 +14,50 @@ export const routes: Routes = [
   {
     path: 'register',
     loadComponent: () =>
-      import('./pages/auth/register/register.page').then(
-        (m) => m.RegisterPage,
-      ),
+      import('./features/auth/pages/register/register.page').then((m) => m.RegisterPage),
   },
 
   {
     path: 'verify-otp',
     loadComponent: () =>
-      import('./pages/auth/verify-otp/verify-otp.page').then(
-        (m) => m.VerifyOtpPage,
-      ),
+      import('./features/auth/pages/verify-otp/verify-otp.page').then((m) => m.VerifyOtpPage),
   },
 
   {
     path: 'create-password',
     loadComponent: () =>
-      import('./pages/auth/create-password/create-password.page').then(
+      import('./features/auth/pages/create-password/create-password.page').then(
         (m) => m.CreatePasswordPage,
       ),
   },
 
   {
     path: 'login',
-    loadComponent: () =>
-      import('./pages/auth/login/login.page').then(
-        (m) => m.LoginPage,
-      ),
+    loadComponent: () => import('./features/auth/pages/login/login.page').then((m) => m.LoginPage),
   },
 
   {
     path: 'influencer-profile',
     canActivate: [authGuard],
     loadComponent: () =>
-      import(
-        './pages/profile/influencer-profile/influencer-profile.page'
-      ).then((m) => m.InfluencerProfilePage),
+      import('./features/profile/pages/influencer-profile/influencer-profile.page').then(
+        (m) => m.InfluencerProfilePage,
+      ),
   },
 
   {
     path: 'brand-profile',
     canActivate: [authGuard],
     loadComponent: () =>
-      import(
-        './pages/profile/brand-profile/brand-profile.page'
-      ).then((m) => m.BrandProfilePage),
+      import('./features/profile/pages/brand-profile/brand-profile.page').then(
+        (m) => m.BrandProfilePage,
+      ),
   },
 
   {
     path: 'home',
     canActivate: [authGuard, profileGuard],
-    loadComponent: () =>
-      import('./pages/home/home.page').then(
-        (m) => m.HomePage,
-      ),
+    loadComponent: () => import('./features/home/pages/home/home.page').then((m) => m.HomePage),
   },
 
   {

@@ -10,9 +10,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { finalize } from 'rxjs';
 
-import { AuthService, VerifyOtpDto } from '../../../core/services/auth.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
-import { ToastService } from '../../../core/services/toast.service';
+import { VerifyOtpDto } from '../../dto/verify-otp.dto';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-verify-otp',
@@ -77,10 +78,8 @@ export class VerifyOtpPage implements OnInit {
         }),
       )
       .subscribe({
-        next: () => {
-          this.toastService.showSuccessToast('OTP verified successfully').subscribe((toast) => {
-            toast.present();
-          });
+        next: async () => {
+          await this.toastService.showSuccessToast('OTP verified successfully');
 
           this.router.navigate(['/create-password'], {
             queryParams: {
@@ -89,12 +88,10 @@ export class VerifyOtpPage implements OnInit {
           });
         },
 
-        error: (error) => {
+        error: async (error) => {
           const message = error?.error?.message ?? 'Invalid OTP';
 
-          this.toastService.showErrorToast(message).subscribe((toast) => {
-            toast.present();
-          });
+          await this.toastService.showErrorToast(message);
         },
       });
   }
@@ -110,18 +107,14 @@ export class VerifyOtpPage implements OnInit {
         }),
       )
       .subscribe({
-        next: () => {
-          this.toastService.showSuccessToast('OTP resent successfully').subscribe((toast) => {
-            toast.present();
-          });
+        next: async () => {
+          await this.toastService.showSuccessToast('OTP resent successfully');
         },
 
-        error: (error) => {
+        error: async(error) => {
           const message = error?.error?.message ?? 'Failed to resend OTP';
 
-          this.toastService.showErrorToast(message).subscribe((toast) => {
-            toast.present();
-          });
+          await this.toastService.showErrorToast(message);
         },
       });
   }

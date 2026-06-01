@@ -1,22 +1,42 @@
-import { inject } from "@angular/core";
+import { inject } from '@angular/core';
 
-import { CanActivateFn, Router } from "@angular/router";
+import { CanActivateFn, Router } from '@angular/router';
+
+import { AuthService } from '../services/auth.service';
+
+import { UserRole } from '../../features/auth/enums/user-role.enum';
+
+import { ProfileStatus } from '../../features/profile/enums/profile-status.enum';
 
 export const profileGuard: CanActivateFn = () => {
+  const authService = inject(AuthService);
+
   const router = inject(Router);
 
-  const isProfileComplete = localStorage.getItem("isProfileComplete");
+  const user = authService.getCurrentUser();
 
-  const role = localStorage.getItem("role");
+  if (!user) {
+    router.navigate(['/login']);
 
-  if (isProfileComplete === "true") {
+    return false;
+  }
+
+  if (user.profileStatus === ProfileStatus.COMPLETE) {
     return true;
   }
 
-  if (role === "INFLUENCER") {
-    router.navigate(["/influencer-profile"]);
-  } else {
-    router.navigate(["/brand-profile"]);
+  switch (user.role) {
+    case UserRole.INFLUENCER:
+      router.navigate(['/influencer-profile']);
+      break;
+
+    case UserRole.BRAND:
+      router.navigate(['/brand-profile']);
+      break;
+
+    default:
+      router.navigate(['/login']);
+      break;
   }
 
   return false;
