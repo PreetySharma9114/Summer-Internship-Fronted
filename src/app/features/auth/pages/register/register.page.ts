@@ -19,12 +19,13 @@ import {
 import { finalize } from 'rxjs';
 
 import { AuthService } from '../../../../core/services/auth.service';
+import { getValidationMessage } from '../../../../shared/helpers/validation-message.helper';
 
 import { RegisterDto } from '../../dto/register.dto';
 import { ToastService } from '../../../../core/services/toast.service';
-
+import { AuthValidators } from '../../../../shared/validators/auth.validators';
 import { UserRole } from '../../enums/user-role.enum';
-
+import { getErrorMessage } from '../../../../shared/helpers/error-message.helper';
 @Component({
   selector: 'app-register',
 
@@ -50,6 +51,7 @@ export class RegisterPage implements OnInit {
 
   private authService = inject(AuthService);
 
+  protected readonly getValidationMessage = getValidationMessage;
   private toastService = inject(ToastService);
 
   private router = inject(Router);
@@ -66,8 +68,7 @@ export class RegisterPage implements OnInit {
 
   private initializeForm(): void {
     this.registerForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-
+      email: ['', AuthValidators.email],
       role: ['', Validators.required],
     });
   }
@@ -82,7 +83,6 @@ export class RegisterPage implements OnInit {
     this.loading = true;
 
     const payload: RegisterDto = this.registerForm.value;
-    console.log('REGISTER PAYLOAD', payload);
     this.authService
       .register(payload)
       .pipe(
@@ -92,19 +92,19 @@ export class RegisterPage implements OnInit {
       )
       .subscribe({
         next: async (response) => {
-          await this.toastService.showSuccessToast('OTP sent successfully');
+          const registrationId = response.data.id;
+
+          this.authService.setRegistrationId(registrationId);
 
           this.router.navigate(['/verify-otp'], {
             queryParams: {
-              id: response.id,
+              id: registrationId,
             },
           });
         },
 
         error: async (error) => {
-          const message = error?.error?.message ?? 'Registration failed';
-
-          await this.toastService.showErrorToast(message);
+          await this.toastService.showErrorToast(getErrorMessage(error, 'Registration failed'));
         },
       });
   }

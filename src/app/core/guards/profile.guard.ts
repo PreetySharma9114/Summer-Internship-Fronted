@@ -14,7 +14,7 @@ export const profileGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   const user = authService.getCurrentUser();
-
+  console.log('PROFILE GUARD USER', user);
   if (!user) {
     router.navigate(['/login']);
 
@@ -27,16 +27,13 @@ export const profileGuard: CanActivateFn = () => {
 
   switch (user.role) {
     case UserRole.INFLUENCER:
-      router.navigate(['/influencer-profile']);
-      break;
+      return router.createUrlTree(['/influencer-profile']);
 
     case UserRole.BRAND:
-      router.navigate(['/brand-profile']);
-      break;
+      return router.createUrlTree(['/brand-profile']);
 
     default:
-      router.navigate(['/login']);
-      break;
+      return router.createUrlTree(['/login']);
   }
 
   return false;

@@ -12,7 +12,7 @@ import {
   IonSpinner,
   IonInputPasswordToggle,
 } from '@ionic/angular/standalone';
-
+import { AuthValidators } from '../../../../shared/validators/auth.validators';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { finalize } from 'rxjs';
@@ -20,9 +20,11 @@ import { finalize } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth.service';
 
 import { ToastService } from '../../../../core/services/toast.service';
+import { getValidationMessage } from '../../../../shared/helpers/validation-message.helper';
 
 import { CustomValidators } from '../../../../shared/validators/custom.validators';
-
+import { getErrorMessage } from '../../../../shared/helpers/error-message.helper';
+import { VALIDATION } from '../../../../core/constants/validation.constants';
 @Component({
   selector: 'app-create-password',
 
@@ -50,6 +52,7 @@ export class CreatePasswordPage implements OnInit {
   private toastService = inject(ToastService);
 
   private router = inject(Router);
+  protected readonly getValidationMessage = getValidationMessage;
 
   private route = inject(ActivatedRoute);
 
@@ -68,8 +71,7 @@ export class CreatePasswordPage implements OnInit {
   private initializeForm(): void {
     this.createPasswordForm = this.fb.group(
       {
-        password: ['', [Validators.required, Validators.minLength(6)]],
-
+        password: ['', AuthValidators.password],
         confirmPassword: ['', Validators.required],
       },
 
@@ -110,9 +112,9 @@ export class CreatePasswordPage implements OnInit {
         },
 
         error: async (error) => {
-          const message = error?.error?.message ?? 'Failed to create password';
-
-          await this.toastService.showErrorToast(message);
+          await this.toastService.showErrorToast(
+            getErrorMessage(error, 'Failed to create password'),
+          );
         },
       });
   }

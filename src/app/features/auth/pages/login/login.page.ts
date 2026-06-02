@@ -1,11 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
-
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import { AuthValidators } from '../../../../shared/validators/auth.validators';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-
-import { RouterLink } from '@angular/router';
-
+import { getValidationMessage } from '../../../../shared/helpers/validation-message.helper';
+import { getErrorMessage } from '../../../../shared/helpers/error-message.helper';
 import {
   IonButton,
   IonContent,
@@ -14,14 +13,12 @@ import {
   IonItem,
   IonSpinner,
 } from '@ionic/angular/standalone';
-
+import { UserRole } from '../../enums/user-role.enum';
 import { finalize } from 'rxjs';
-
+import { ProfileStatus } from 'src/app/features/profile/enums/profile-status.enum';
 import { AuthService } from '../../../../core/services/auth.service';
-
 import { LoginDto } from '../../dto/login.dto';
 import { ToastService } from '../../../../core/services/toast.service';
-
 @Component({
   selector: 'app-login',
 
@@ -46,9 +43,9 @@ export class LoginPage implements OnInit {
   private fb = inject(FormBuilder);
 
   private authService = inject(AuthService);
-
+  private router = inject(Router);
   private toastService = inject(ToastService);
-
+  protected readonly getValidationMessage = getValidationMessage;
   loginForm!: FormGroup;
 
   loading = false;
@@ -59,9 +56,8 @@ export class LoginPage implements OnInit {
 
   private initializeForm(): void {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-
-      password: ['', Validators.required],
+      email: ['', AuthValidators.email],
+      password: ['', AuthValidators.password],
     });
   }
 
@@ -84,17 +80,34 @@ export class LoginPage implements OnInit {
         }),
       )
       .subscribe({
-        next:async () => {
+        next: async () => {
+          console.log('LOGIN RESPONSE', Response);
           await this.toastService.showSuccessToast('Login successful');
+
+          const user = this.authService.getCurrentUser();
+          console.log('CURRENT USER',user);
+          if (!user) {
+            return;
+          }
+
+          if (user.profileStatus === ProfileStatus.COMPLETE) {
+            this.router.navigate(['/home']);
+            return;
+          }
+
+          switch (user.role) {
+            case UserRole.INFLUENCER:
+              this.router.navigate(['/influencer-profile']);
+              break;
+
+            case UserRole.BRAND:
+              this.router.navigate(['/brand-profile']);
+              break;
+          }
         },
 
-        error: async(error) => {
-          console.log('LOGIN ERROR:', error);
-
-          console.log('LOGIN ERROR BODY:', JSON.stringify(error.error, null, 2));
-
-          const message = error?.error?.message ?? 'Login failed';
-          await this.toastService.showErrorToast(message);
+        error: async (error) => {
+          await this.toastService.showErrorToast(getErrorMessage(error, 'Login failed'));
         },
       });
   }

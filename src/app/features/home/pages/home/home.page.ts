@@ -22,7 +22,7 @@ export class HomePage implements OnInit {
   
   user: User | null = null;
   
-  loading = true;
+  loading = false;
   
   readonly userRole = UserRole;
   ngOnInit(): void {

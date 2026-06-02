@@ -24,8 +24,10 @@
             </ion-input>
           </ion-item>
 
-          @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
-            <small> Enter valid email </small>
+          @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+            <small>
+              {{ getValidationMessage(loginForm.get('email')) }}
+            </small>
           }
         </div>
 
@@ -43,8 +45,10 @@
             </ion-input>
           </ion-item>
 
-          @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
-            <small> Password is required </small>
+          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+            <small>
+              {{ getValidationMessage(loginForm.get('password')) }}
+            </small>
           }
         </div>
 

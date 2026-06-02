@@ -24,8 +24,10 @@
               <ion-input placeholder="Brand Name" formControlName="brandName"> </ion-input>
             </ion-item>
 
-            @if (brandProfileForm.get('brandName')?.touched && brandProfileForm.get('brandName')?.invalid) {
-              <small> Brand name is required </small>
+            @if (brandProfileForm.get('brandName')?.invalid && brandProfileForm.get('brandName')?.touched) {
+              <small>
+                {{ getValidationMessage(brandProfileForm.get('brandName')) }}
+              </small>
             }
           </div>
 
@@ -35,7 +37,9 @@
             </ion-item>
 
             @if (brandProfileForm.get('website')?.touched && brandProfileForm.get('website')?.invalid) {
-              <small> Website is required </small>
+              <small>
+                {{ getValidationMessage(brandProfileForm.get('website')) }}
+              </small>
             }
           </div>
 
@@ -45,7 +49,9 @@
             </ion-item>
 
             @if (brandProfileForm.get('description')?.touched && brandProfileForm.get('description')?.invalid) {
-              <small> Description is required </small>
+              <small>
+                {{ getValidationMessage(brandProfileForm.get('description')) }}
+              </small>
             }
           </div>
 
@@ -59,6 +65,12 @@
                 }
               </ion-select>
             </ion-item>
+
+            @if (brandProfileForm.get('industry')?.invalid && brandProfileForm.get('industry')?.touched) {
+              <small>
+                {{ getValidationMessage(brandProfileForm.get('industry')) }}
+              </small>
+            }
           </div>
 
           <div class="input-group">

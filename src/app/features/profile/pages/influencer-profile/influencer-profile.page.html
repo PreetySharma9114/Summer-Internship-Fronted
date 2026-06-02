@@ -21,8 +21,10 @@
             <ion-input placeholder="Full Name" formControlName="fullName"> </ion-input>
           </ion-item>
 
-          @if (influencerProfileForm.get('fullName')?.touched && influencerProfileForm.get('fullName')?.invalid) {
-            <small> Full name is required </small>
+          @if (influencerProfileForm.get('fullName')?.invalid && influencerProfileForm.get('fullName')?.touched) {
+            <small>
+              {{ getValidationMessage(influencerProfileForm.get('fullName')) }}
+            </small>
           }
         </div>
 
@@ -31,8 +33,10 @@
             <ion-input placeholder="Username" formControlName="username"> </ion-input>
           </ion-item>
 
-          @if (influencerProfileForm.get('username')?.touched && influencerProfileForm.get('username')?.invalid) {
-            <small> Username is required </small>
+          @if (influencerProfileForm.get('username')?.invalid && influencerProfileForm.get('username')?.touched) {
+            <small>
+              {{ getValidationMessage(influencerProfileForm.get('username')) }}
+            </small>
           }
         </div>
 
@@ -42,7 +46,9 @@
           </ion-item>
 
           @if (influencerProfileForm.get('bio')?.touched && influencerProfileForm.get('bio')?.invalid) {
-            <small> Bio is required </small>
+            <small>
+              {{ getValidationMessage(influencerProfileForm.get('bio')) }}
+            </small>
           }
         </div>
 
@@ -56,6 +62,12 @@
               }
             </ion-select>
           </ion-item>
+
+          @if (influencerProfileForm.get('niche')?.invalid && influencerProfileForm.get('niche')?.touched) {
+            <small>
+              {{ getValidationMessage(influencerProfileForm.get('niche')) }}
+            </small>
+          }
         </div>
 
         <div class="input-group">

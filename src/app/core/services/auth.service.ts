@@ -11,7 +11,7 @@ import { Session } from '../../features/auth/interfaces/session.interface';
 import { RegisterDto } from '../../features/auth/dto/register.dto';
 
 import { LoginDto } from '../../features/auth/dto/login.dto';
-
+import { AUTH_STORAGE_KEYS } from '../constants/auth-storage.constants';
 import { VerifyOtpDto } from '../../features/auth/dto/verify-otp.dto';
 import { STORAGE_KEYS } from '../constants/app.constants';
 import { CreatePasswordDto } from '../../features/auth/dto/create-password.dto';
@@ -35,9 +35,23 @@ export class AuthService {
     this.restoreSession();
   }
 
-  register(data: RegisterDto): Observable<{ id: string }> {
-    return this.http.post<{
+  register(data: RegisterDto): Observable<{
+    success: boolean;
+    message: string;
+    data: {
       id: string;
+      isOtpVerified: boolean;
+      profileStatus: string;
+    };
+  }> {
+    return this.http.post<{
+      success: boolean;
+      message: string;
+      data: {
+        id: string;
+        isOtpVerified: boolean;
+        profileStatus: string;
+      };
     }>(`${this.apiUrl}/register`, data);
   }
 
@@ -59,16 +73,25 @@ export class AuthService {
     }>(`${this.apiUrl}/create-password`, data);
   }
 
-  login(data: LoginDto): Observable<Session> {
-    return this.http.post<Session>(`${this.apiUrl}/login`, data).pipe(
-      tap((response) => {
-        this.saveSession({
-          token: response.token,
-
-          user: response.user,
-        });
-      }),
-    );
+  login(data: LoginDto): Observable<{
+    success: boolean;
+    message: string;
+    data: Session;
+  }> {
+    return this.http
+      .post<{
+        success: boolean;
+        message: string;
+        data: Session;
+      }>(`${this.apiUrl}/login`, data)
+      .pipe(
+        tap((response) => {
+          this.saveSession({
+            token: response.data.token,
+            user: response.data.user,
+          });
+        }),
+      );
   }
 
   getCurrentUser(): User | null {
@@ -118,5 +141,16 @@ export class AuthService {
     this.sessionSubject.next(session);
 
     this.currentUserSubject.next(session.user);
+  }
+  setRegistrationId(id: string): void {
+    localStorage.setItem(AUTH_STORAGE_KEYS.REGISTRATION_ID, id);
+  }
+
+  getRegistrationId(): string | null {
+    return localStorage.getItem(AUTH_STORAGE_KEYS.REGISTRATION_ID);
+  }
+
+  clearRegistrationId(): void {
+    localStorage.removeItem(AUTH_STORAGE_KEYS.REGISTRATION_ID);
   }
 }

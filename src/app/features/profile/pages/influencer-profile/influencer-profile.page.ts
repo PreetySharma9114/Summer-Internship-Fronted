@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-
+import { getValidationMessage } from '../../../../shared/helpers/validation-message.helper';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InfluencerProfile } from '../../interfaces/influencer-profile.interface';
 import {
@@ -22,9 +22,11 @@ import { finalize } from 'rxjs';
 import { ToastService } from '../../../../core/services/toast.service';
 
 import { ProfileService } from '../../../../core/services/profile.service';
-
+import { getErrorMessage } from '../../../../shared/helpers/error-message.helper';
 import { InfluencerNiche } from '../../enums/influencer-niche.enum';
-import { FileUploadHelper } from '../../../../shared/helpers/file-upload.helper';
+import { generatePreview } from '../../../../shared/helpers/file-upload.helper';
+import { ProfileValidators } from '../../../../shared/validators/profile.validators';
+import { validateImageFile } from '../../../../shared/helpers/file-validation.helper';
 @Component({
   selector: 'app-influencer-profile',
 
@@ -52,7 +54,7 @@ export class InfluencerProfilePage implements OnInit {
   private profileService = inject(ProfileService);
 
   private toastService = inject(ToastService);
-
+  protected readonly getValidationMessage = getValidationMessage;
   private router = inject(Router);
 
   influencerProfileForm!: FormGroup;
@@ -71,11 +73,11 @@ export class InfluencerProfilePage implements OnInit {
 
   private initializeForm(): void {
     this.influencerProfileForm = this.fb.group({
-      fullName: ['', Validators.required],
+      fullName: ['', ProfileValidators.fullName],
 
-      username: ['', Validators.required],
+      username: ['', ProfileValidators.username],
 
-      bio: ['', Validators.required],
+      bio: ['', ProfileValidators.bio],
 
       niche: ['', Validators.required],
 
@@ -92,8 +94,7 @@ export class InfluencerProfilePage implements OnInit {
 
     if (input.files && input.files.length > 0) {
       this.selectedImage = input.files[0];
-
-      FileUploadHelper.generatePreview(this.selectedImage, (preview) => {
+      generatePreview(this.selectedImage, (preview: string) => {
         this.imagePreview = preview;
       });
     }
@@ -124,9 +125,9 @@ export class InfluencerProfilePage implements OnInit {
         },
 
         error: async (error) => {
-          const message = error?.error?.message ?? 'Failed to complete profile';
-
-          await this.toastService.showErrorToast(message);
+          await this.toastService.showErrorToast(
+            getErrorMessage(error, 'Failed to complete profile'),
+          );
         },
       });
   }

@@ -9,12 +9,12 @@ import { IonButton, IonContent, IonSpinner, IonInputOtp } from '@ionic/angular/s
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { finalize } from 'rxjs';
-
+import { getValidationMessage } from '../../../../shared/helpers/validation-message.helper';
+import { AuthValidators } from '../../../../shared/validators/auth.validators';
 import { AuthService } from '../../../../core/services/auth.service';
-
+import { getErrorMessage } from '../../../../shared/helpers/error-message.helper';
 import { VerifyOtpDto } from '../../dto/verify-otp.dto';
 import { ToastService } from '../../../../core/services/toast.service';
-
 @Component({
   selector: 'app-verify-otp',
 
@@ -35,6 +35,7 @@ export class VerifyOtpPage implements OnInit {
 
   private router = inject(Router);
 
+  protected readonly getValidationMessage = getValidationMessage;
   verifyOtpForm!: FormGroup;
 
   loading = false;
@@ -44,14 +45,25 @@ export class VerifyOtpPage implements OnInit {
   userId = '';
 
   ngOnInit(): void {
-    this.userId = this.route.snapshot.queryParams['id'];
-
     this.initializeForm();
+
+    const queryId = this.route.snapshot.queryParams['id'];
+
+    const storedId = this.authService.getRegistrationId();
+    console.log('QUERY ID:', queryId);
+    console.log('STORED ID:', storedId);
+    this.userId = queryId || storedId || '';
+    console.log('USER ID:', this.userId);
+    if (!this.userId) {
+      this.router.navigate(['/register']);
+
+      return;
+    }
   }
 
   private initializeForm(): void {
     this.verifyOtpForm = this.fb.group({
-      otp: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
+      otp: ['', AuthValidators.otp],
     });
   }
 
@@ -79,6 +91,8 @@ export class VerifyOtpPage implements OnInit {
       )
       .subscribe({
         next: async () => {
+          const storedId = this.authService.getRegistrationId();
+
           await this.toastService.showSuccessToast('OTP verified successfully');
 
           this.router.navigate(['/create-password'], {
@@ -89,9 +103,7 @@ export class VerifyOtpPage implements OnInit {
         },
 
         error: async (error) => {
-          const message = error?.error?.message ?? 'Invalid OTP';
-
-          await this.toastService.showErrorToast(message);
+          await this.toastService.showErrorToast(getErrorMessage(error, 'Invalid OTP'));
         },
       });
   }
@@ -111,10 +123,8 @@ export class VerifyOtpPage implements OnInit {
           await this.toastService.showSuccessToast('OTP resent successfully');
         },
 
-        error: async(error) => {
-          const message = error?.error?.message ?? 'Failed to resend OTP';
-
-          await this.toastService.showErrorToast(message);
+        error: async (error) => {
+          await this.toastService.showErrorToast(getErrorMessage(error, 'Failed to resend OTP'));
         },
       });
   }

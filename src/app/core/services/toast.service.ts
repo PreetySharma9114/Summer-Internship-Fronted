@@ -10,56 +10,33 @@ import { APP_CONSTANTS } from '../constants/app.constants';
 export class ToastService {
   private toastController = inject(ToastController);
 
-  async showSuccessToast(
-    message: string,
-  ): Promise<void> {
+  async showSuccessToast(message: string): Promise<void> {
     await this.showToast({
       message,
       color: 'success',
     });
   }
 
-  async showErrorToast(
-    message: string,
-  ): Promise<void> {
+  async showErrorToast(message: string): Promise<void> {
     await this.showToast({
       message,
       color: 'danger',
     });
   }
 
-  async showWarningToast(
-    message: string,
-  ): Promise<void> {
+  async showWarningToast(message: string): Promise<void> {
     await this.showToast({
       message,
       color: 'warning',
     });
   }
 
-  async showInfoToast(
-    message: string,
-  ): Promise<void> {
-    await this.showToast({
-      message,
-      color: 'primary',
+  private async showToast(options: ToastOptions): Promise<void> {
+    const toast = await this.toastController.create({
+      ...options,
+      duration: APP_CONSTANTS.TOAST_DURATION,
+      position: APP_CONSTANTS.TOAST_POSITION as 'top' | 'bottom' | 'middle',
     });
-  }
-
-  private async showToast(
-    options: ToastOptions,
-  ): Promise<void> {
-    const toast =
-      await this.toastController.create({
-        ...options,
-        duration:
-          APP_CONSTANTS.TOAST_DURATION,
-        position:
-          APP_CONSTANTS.TOAST_POSITION as
-            | 'top'
-            | 'bottom'
-            | 'middle',
-      });
 
     await toast.present();
   }

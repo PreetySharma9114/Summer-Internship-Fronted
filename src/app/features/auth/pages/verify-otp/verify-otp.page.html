@@ -12,7 +12,9 @@
           <ion-input-otp length="6" formControlName="otp"> </ion-input-otp>
 
           @if (verifyOtpForm.get('otp')?.touched && verifyOtpForm.get('otp')?.invalid) {
-            <small> Enter a valid OTP </small>
+            <small>
+              {{ getValidationMessage(verifyOtpForm.get('otp')) }}
+            </small>
           }
         </div>
 

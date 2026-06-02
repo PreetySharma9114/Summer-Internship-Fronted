@@ -1,9 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-
+import { getValidationMessage } from '../../../../shared/helpers/validation-message.helper';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-
+import { validateImageFile } from '../../../../shared/helpers/file-validation.helper';
 import {
   IonButton,
   IonContent,
@@ -25,7 +25,10 @@ import { ProfileService } from '../../../../core/services/profile.service';
 
 import { BrandIndustry } from '../../enums/brand-industry.enum';
 import { BrandProfile } from '../../interfaces/brand-profile.interface';
-import { FileUploadHelper } from '../../../../shared/helpers/file-upload.helper';
+import { generatePreview } from '../../../../shared/helpers/file-upload.helper';
+import { ProfileValidators } from '../../../../shared/validators/profile.validators';
+import { getErrorMessage } from '../../../../shared/helpers/error-message.helper';
+
 @Component({
   selector: 'app-brand-profile',
 
@@ -55,7 +58,7 @@ export class BrandProfilePage implements OnInit {
   private toastService = inject(ToastService);
 
   private router = inject(Router);
-
+  protected readonly getValidationMessage = getValidationMessage;
   brandProfileForm!: FormGroup;
 
   loading = false;
@@ -72,28 +75,42 @@ export class BrandProfilePage implements OnInit {
 
   private initializeForm(): void {
     this.brandProfileForm = this.fb.group({
-      brandName: ['', Validators.required],
+      brandName: ['', ProfileValidators.brandName],
 
-      website: ['', Validators.required],
+      website: ['', ProfileValidators.website],
 
-      description: ['', Validators.required],
+      description: ['', ProfileValidators.description],
 
       industry: ['', Validators.required],
 
-      instagramUsername: [''],
+      instagramUsername: ['', ProfileValidators.instagramUsername],
     });
   }
 
   onLogoChange(event: Event): void {
     const input = event.target as HTMLInputElement;
 
-    if (input.files && input.files.length > 0) {
-      this.selectedLogo = input.files[0];
-
-      FileUploadHelper.generatePreview(this.selectedLogo, (preview) => {
-        this.logoPreview = preview;
-      });
+    if (!input.files?.length) {
+      return;
     }
+
+    const file = input.files[0];
+
+    const error = validateImageFile(file);
+
+    if (error) {
+      void this.toastService.showErrorToast(error);
+
+      input.value = '';
+
+      return;
+    }
+
+    this.selectedLogo = file;
+
+    generatePreview(file, (preview: string) => {
+      this.logoPreview = preview;
+    });
   }
 
   submitProfile(): void {
@@ -116,12 +133,14 @@ export class BrandProfilePage implements OnInit {
       .subscribe({
         next: async () => {
           await this.toastService.showSuccessToast('Profile completed successfully');
+
+          this.router.navigate(['/home']);
         },
 
         error: async (error) => {
-          const message = error?.error?.message ?? 'Failed to complete profile';
-
-          await this.toastService.showErrorToast(message);
+          await this.toastService.showErrorToast(
+            getErrorMessage(error, 'Failed to complete profile'),
+          );
         },
       });
   }

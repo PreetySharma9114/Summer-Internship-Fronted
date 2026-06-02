@@ -18,7 +18,9 @@
           </ion-item>
 
           @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
-            <small> Enter valid email </small>
+            <small>
+              {{ getValidationMessage(registerForm.get('email')) }}
+            </small>
           }
         </div>
 
@@ -37,7 +39,9 @@
           </ion-item>
 
           @if (registerForm.get('role')?.touched && registerForm.get('role')?.invalid) {
-            <small> Please select a role </small>
+            <small>
+              {{ getValidationMessage(registerForm.get('role')) }}
+            </small>
           }
         </div>
 

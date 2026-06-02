@@ -4,13 +4,7 @@
 @import "@ionic/angular/css/typography.css";
 @import "@ionic/angular/css/display.css";
 
-:root {
-  --primary: #6c63ff;
-  --text: #262626;
-  --muted: #8e8e8e;
-  --border: #dbdbdb;
-  --background: #fafafa;
-}
+/* GLOBAL */
 
 body {
   margin: 0;
@@ -19,79 +13,57 @@ body {
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
-
-  background: var(--background);
-
-  color: var(--text);
+  background: var(--ion-background-color);
+  color: var(--ion-text-color);
 }
 
 ion-content {
-  --background: var(--background);
+  --background: var(--ion-background-color);
 }
 
 /* AUTH */
 
 .auth-container {
   min-height: 100vh;
-
   display: flex;
-
   justify-content: center;
-
   align-items: center;
-
   padding: 24px;
 }
 
 .auth-card {
   width: 100%;
-
   max-width: 380px;
-
-  background: white;
-
-  border: 1px solid var(--border);
-
-  padding: 40px;
-
+  background: #ffffff;
+  border: 1px solid var(--ion-border-color);
   border-radius: 12px;
+  padding: 40px;
 }
 
 /* BRAND */
 
 .brand {
   text-align: center;
-
   font-size: 42px;
-
   font-weight: 800;
-
-  color: var(--primary);
-
+  color: var(--ion-color-primary);
   margin-bottom: 32px;
-
   letter-spacing: -1px;
 }
 
-/* TITLES */
+/* TYPOGRAPHY */
 
 h1 {
   text-align: center;
-
   font-size: 24px;
-
   font-weight: 600;
-
   margin-bottom: 8px;
 }
 
 p {
   text-align: center;
-
-  color: var(--muted);
-
+  color: #8e8e93;
   font-size: 14px;
-
   margin-bottom: 28px;
 }
 
@@ -105,27 +77,20 @@ p {
   display: none;
 }
 
-/* INPUTS */
+/* IONIC INPUTS */
 
 ion-item {
   --background: #fafafa;
-
   --padding-start: 12px;
-
   --inner-padding-end: 12px;
-
-  border: 1px solid var(--border);
-
+  border: 1px solid var(--ion-border-color);
   border-radius: 8px;
-
   min-height: 44px;
 }
 
 ion-input {
-  --placeholder-color: #8e8e8e;
-
+  --placeholder-color: #8e8e93;
   --placeholder-opacity: 1;
-
   font-size: 14px;
 }
 
@@ -133,39 +98,29 @@ ion-select {
   font-size: 14px;
 }
 
-/* BUTTON */
+/* BUTTONS */
 
 ion-button {
   margin-top: 16px;
-
   height: 44px;
-
-  --background: var(--primary);
-
+  --background: var(--ion-color-primary);
   --border-radius: 8px;
-
-  font-weight: 600;
-
   font-size: 14px;
+  font-weight: 600;
 }
 
 /* LINKS */
 
 .bottom-text {
   text-align: center;
-
   margin-top: 24px;
-
   font-size: 14px;
-
-  color: var(--muted);
+  color: #8e8e93;
 }
 
 .bottom-text a {
-  color: var(--primary);
-
+  color: var(--ion-color-primary);
   text-decoration: none;
-
   font-weight: 600;
 }
 
@@ -173,61 +128,37 @@ ion-button {
 
 small {
   display: block;
-
   margin-top: 4px;
-
-  color: #ed4956;
-
+  color: var(--ion-color-danger);
   font-size: 12px;
 }
-input[type='file'] {
-  width: 100%;
 
-  padding: 12px;
+/* PROFILE */
 
-  border: 1px solid var(--border);
-
-  border-radius: 8px;
-
-  background: #fafafa;
-
-  font-size: 14px;
-}
 .profile-page {
   min-height: 100vh;
-
   display: flex;
-
   justify-content: center;
-
   padding: 40px 20px;
 }
 
 .profile-wrapper {
   width: 100%;
-
   max-width: 900px;
-
-  background: white;
-
-  border: 1px solid var(--border);
-
+  background: #ffffff;
+  border: 1px solid var(--ion-border-color);
   border-radius: 16px;
-
   padding: 40px;
 }
 
 .profile-header {
   text-align: center;
-
   margin-bottom: 32px;
 }
 
 .profile-grid {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
   gap: 16px;
 }
 
@@ -235,49 +166,28 @@ input[type='file'] {
   grid-column: 1 / -1;
 }
 
-.upload-box {
-  text-align: center;
-
-  margin-bottom: 24px;
-}
-
-.upload-box input {
-  margin-top: 12px;
-}
-/* PROFILE UPLOAD */
+/* FILE UPLOAD */
 
 .upload-box {
   text-align: center;
-
   margin-bottom: 24px;
 }
 
 .profile-preview {
   width: 120px;
-
   height: 120px;
-
-  border-radius: 50%;
-
   object-fit: cover;
-
-  border: 2px solid var(--border);
-
+  border-radius: 50%;
+  border: 2px solid var(--ion-border-color);
   display: block;
-
   margin: 0 auto 16px;
 }
 
-input[type='file'] {
+input[type="file"] {
   width: 100%;
-
   padding: 12px;
-
-  border: 1px solid var(--border);
-
+  border: 1px solid var(--ion-border-color);
   border-radius: 8px;
-
-  background: #fafafa;
-
+  background: #ffffff;
   font-size: 14px;
 }
