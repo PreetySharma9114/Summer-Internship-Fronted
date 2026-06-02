@@ -85,7 +85,7 @@ export class InfluencerProfilePage implements OnInit {
 
       youtubeUsername: [''],
 
-      followersCount: ['', Validators.required],
+      instagramFollowers: ['', Validators.required],
     });
   }
 
