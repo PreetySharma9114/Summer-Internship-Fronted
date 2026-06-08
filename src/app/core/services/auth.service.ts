@@ -100,6 +100,19 @@ export class AuthService {
 
   setCurrentUser(user: User): void {
     this.currentUserSubject.next(user);
+
+    const session = this.sessionSubject.value;
+
+    if (session) {
+      const updatedSession = {
+        ...session,
+        user,
+      };
+
+      localStorage.setItem(this.SESSION_KEY, JSON.stringify(updatedSession));
+
+      this.sessionSubject.next(updatedSession);
+    }
   }
 
   getToken(): string | null {

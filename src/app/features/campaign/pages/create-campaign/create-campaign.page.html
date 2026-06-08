@@ -1,0 +1,70 @@
+<ion-content class="ion-padding">
+  <div class="page-header">
+    <h1>Create Campaign</h1>
+
+    <p>Create a campaign for influencers</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <ion-item>
+      <ion-input label="Title" formControlName="title"> </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-textarea label="Description" formControlName="description"> </ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-select label="Category" formControlName="category">
+        @for (industry of industries; track industry) {
+          <ion-select-option [value]="industry">
+            {{ industry }}
+          </ion-select-option>
+        }
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-select multiple="true" label="Platforms" formControlName="platforms">
+        @for (platform of platforms; track platform) {
+          <ion-select-option [value]="platform">
+            {{ platform }}
+          </ion-select-option>
+        }
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="number" label="Budget" formControlName="budgetPerInfluencer"> </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="number" label="Total Slots" formControlName="totalSlots"> </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Start Date</ion-label>
+
+      <ion-datetime-button datetime="startDate"> </ion-datetime-button>
+    </ion-item>
+
+    <ion-modal keepContentsMounted="true">
+      <ng-template>
+        <ion-datetime id="startDate" presentation="date" formControlName="startDate"> </ion-datetime>
+      </ng-template>
+    </ion-modal>
+
+    <ion-item>
+      <ion-label>End Date</ion-label>
+
+      <ion-datetime-button datetime="endDate"> </ion-datetime-button>
+    </ion-item>
+
+    <ion-modal keepContentsMounted="true">
+      <ng-template>
+        <ion-datetime id="endDate" presentation="date" formControlName="endDate"> </ion-datetime>
+      </ng-template>
+    </ion-modal>
+
+    <ion-button expand="block" type="submit"> Create Campaign </ion-button>
+  </form>
+</ion-content>

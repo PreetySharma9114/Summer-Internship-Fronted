@@ -1,15 +1,14 @@
 import { Routes } from '@angular/router';
 
 import { authGuard } from './core/guards/auth.guard';
-
 import { profileGuard } from './core/guards/profile.guard';
+
 export const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',
   },
-
   {
     path: 'register',
     loadComponent: () =>
@@ -34,7 +33,6 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./features/auth/pages/login/login.page').then((m) => m.LoginPage),
   },
-
   {
     path: 'influencer-profile',
     canActivate: [authGuard],
@@ -57,6 +55,46 @@ export const routes: Routes = [
     path: 'home',
     canActivate: [authGuard, profileGuard],
     loadComponent: () => import('./features/home/pages/home/home.page').then((m) => m.HomePage),
+  },
+  {
+    path: 'campaign-list',
+    canActivate: [authGuard, profileGuard],
+    loadComponent: () =>
+      import('./features/campaign/pages/campaign-list/campaign-list.page').then(
+        (m) => m.CampaignListPage,
+      ),
+  },
+  {
+    path: 'campaign-details/:id',
+    canActivate: [authGuard, profileGuard],
+    loadComponent: () =>
+      import('./features/campaign/pages/campaign-details/campaign-details.page').then(
+        (m) => m.CampaignDetailsPage,
+      ),
+  },
+  {
+    path: 'create-campaign',
+    canActivate: [authGuard, profileGuard],
+    loadComponent: () =>
+      import('./features/campaign/pages/create-campaign/create-campaign.page').then(
+        (m) => m.CreateCampaignPage,
+      ),
+  },
+  {
+    path: 'my-campaigns',
+    canActivate: [authGuard, profileGuard],
+    loadComponent: () =>
+      import('./features/campaign/pages/my-campaigns/my-campaigns.page').then(
+        (m) => m.MyCampaignsPage,
+      ),
+  },
+  {
+    path: 'my-applications',
+    canActivate: [authGuard, profileGuard],
+    loadComponent: () =>
+      import('./features/campaign/pages/my-applications/my-applications.page').then(
+        (m) => m.MyApplicationsPage,
+      ),
   },
 
   {

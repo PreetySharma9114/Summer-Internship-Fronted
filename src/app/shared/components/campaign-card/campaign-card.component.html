@@ -1,0 +1,44 @@
+<ion-card class="campaign-card" (click)="viewDetails()">
+  <div class="campaign-header">
+    <div class="campaign-logo">
+      {{ campaign.title.charAt(0) }}
+    </div>
+
+    <div class="campaign-brand-info">
+      <p>
+        {{ campaign.platforms[0] }}
+      </p>
+    </div>
+
+    <div class="campaign-category">
+      {{ campaign.category }}
+    </div>
+  </div>
+
+  <div class="campaign-body">
+    <h2>
+      {{ campaign.title }}
+    </h2>
+
+    <p class="campaign-description">
+      {{ campaign.description }}
+    </p>
+  </div>
+
+  <div class="campaign-footer">
+    <div>
+      <strong>Budget</strong>
+      <p>₹{{ campaign.budgetPerInfluencer }}</p>
+    </div>
+
+    <div>
+      <strong>Slots</strong>
+      <p>{{ campaign.filledSlots }}/{{ campaign.totalSlots }}</p>
+    </div>
+
+    <div>
+      <strong>Status</strong>
+      <p>{{ campaign.status }}</p>
+    </div>
+  </div>
+</ion-card>

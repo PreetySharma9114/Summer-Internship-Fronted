@@ -1,0 +1,31 @@
+<ion-content class="ion-padding">
+  @if (loading) {
+    <ion-spinner name="crescent"></ion-spinner>
+  }
+
+  @if (!loading) {
+
+    <div class="page-header">
+      <h1>My Applications</h1>
+    </div>
+
+    @for (application of applications; track application._id) {
+
+      @if (application.campaignId) {
+
+        <div class="campaign-card">
+          <h3>
+            {{ application.campaignId.title }}
+          </h3>
+
+          <p>
+            Status: {{ application.status }}
+          </p>
+        </div>
+
+      }
+
+    }
+
+  }
+</ion-content>

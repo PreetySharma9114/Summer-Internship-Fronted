@@ -14,7 +14,6 @@ export const profileGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   const user = authService.getCurrentUser();
-  console.log('PROFILE GUARD USER', user);
   if (!user) {
     router.navigate(['/login']);
 

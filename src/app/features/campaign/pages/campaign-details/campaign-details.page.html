@@ -1,0 +1,55 @@
+<ion-content class="ion-padding">
+  @if (loading) {
+    <ion-spinner name="crescent"></ion-spinner>
+  }
+
+  @if (!loading && campaign) {
+    <div class="page-header">
+      <h1>
+        {{ campaign.title }}
+      </h1>
+
+      <div class="campaign-category">
+        {{ campaign.category }}
+      </div>
+    </div>
+
+    <div class="campaign-details-card">
+      <p class="campaign-description">
+        {{ campaign.description }}
+      </p>
+
+      <div class="details-row">
+        <strong>Budget</strong>
+
+        <span> ₹{{ campaign.budgetPerInfluencer }} </span>
+      </div>
+
+      <div class="details-row">
+        <strong>Slots</strong>
+
+        <span> {{ campaign.filledSlots }}/{{ campaign.totalSlots }} </span>
+      </div>
+
+      <div class="details-row">
+        <strong>Status</strong>
+
+        <span>
+          {{ campaign.status }}
+        </span>
+      </div>
+
+      <div class="details-row">
+        <strong>Platforms</strong>
+
+        <span>
+          {{ campaign.platforms.join(', ') }}
+        </span>
+      </div>
+    </div>
+
+    @if (user?.role === 'INFLUENCER') {
+      <ion-button expand="block" color="primary" (click)="applyToCampaign()"> Apply Now </ion-button>
+    }
+  }
+</ion-content>

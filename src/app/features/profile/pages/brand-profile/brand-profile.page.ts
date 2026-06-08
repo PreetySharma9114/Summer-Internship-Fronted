@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
-
+import { AuthService } from '../../../../core/services/auth.service';
+import { ProfileStatus } from '../../enums/profile-status.enum';
 import { CommonModule } from '@angular/common';
 import { getValidationMessage } from '../../../../shared/helpers/validation-message.helper';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -56,7 +57,7 @@ export class BrandProfilePage implements OnInit {
   private profileService = inject(ProfileService);
 
   private toastService = inject(ToastService);
-
+  private authService = inject(AuthService);
   private router = inject(Router);
   protected readonly getValidationMessage = getValidationMessage;
   brandProfileForm!: FormGroup;
@@ -132,6 +133,15 @@ export class BrandProfilePage implements OnInit {
       )
       .subscribe({
         next: async () => {
+          const user = this.authService.getCurrentUser();
+
+          if (user) {
+            this.authService.setCurrentUser({
+              ...user,
+              profileStatus: ProfileStatus.COMPLETE,
+            });
+          }
+
           await this.toastService.showSuccessToast('Profile completed successfully');
 
           this.router.navigate(['/home']);

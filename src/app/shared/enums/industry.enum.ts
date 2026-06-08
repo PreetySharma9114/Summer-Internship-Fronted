@@ -1,0 +1,10 @@
+export enum Industry {
+  FASHION = 'FASHION',
+  TECHNOLOGY = 'TECHNOLOGY',
+  FITNESS = 'FITNESS',
+  FOOD = 'FOOD',
+  TRAVEL = 'TRAVEL',
+  BEAUTY = 'BEAUTY',
+  EDUCATION = 'EDUCATION',
+  FINANCE = 'FINANCE',
+}
