@@ -1,5 +1,3 @@
-import { CommonModule } from '@angular/common';
-
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 
 import { IonContent, IonSpinner, IonButton } from '@ionic/angular/standalone';
@@ -7,16 +5,17 @@ import { IonContent, IonSpinner, IonButton } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
+import { CommonModule, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { CampaignService } from '../../../../core/services/campaign.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Campaign } from '../../../../shared/interfaces/campaign.interface';
 import { ApplicationService } from '../../../../core/services/application.service';
+
 @Component({
   selector: 'app-campaign-details',
   standalone: true,
   templateUrl: './campaign-details.page.html',
-  imports: [CommonModule, IonContent, IonSpinner, IonButton],
+  imports: [CommonModule, IonContent, IonSpinner, IonButton, CurrencyPipe, TitleCasePipe],
 })
 export class CampaignDetailsPage implements OnInit {
   private route = inject(ActivatedRoute);
@@ -27,7 +26,7 @@ export class CampaignDetailsPage implements OnInit {
   private destroyRef = inject(DestroyRef);
 
   campaign?: Campaign;
-
+  applications: any[] = [];
   loading = true;
 
   ngOnInit(): void {
@@ -64,6 +63,23 @@ export class CampaignDetailsPage implements OnInit {
 
       error: (error) => {
         alert(error.error?.message ?? 'Failed to apply');
+      },
+    });
+  }
+  viewApplications(): void {
+    if (!this.campaign) {
+      return;
+    }
+
+    this.applicationService.getCampaignApplications(this.campaign._id).subscribe({
+      next: (response) => {
+        console.log('APPLICATIONS', response.data);
+
+        this.applications = response.data;
+      },
+
+      error: (error) => {
+        console.error(error);
       },
     });
   }

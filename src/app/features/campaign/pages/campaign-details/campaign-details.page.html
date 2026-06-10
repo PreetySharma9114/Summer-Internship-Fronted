@@ -5,12 +5,12 @@
 
   @if (!loading && campaign) {
     <div class="page-header">
-      <h1>
-        {{ campaign.title }}
-      </h1>
+      <h1>{{ campaign.title }}</h1>
+
+      <p>Campaign details and requirements</p>
 
       <div class="campaign-category">
-        {{ campaign.category }}
+        {{ campaign.category | titlecase }}
       </div>
     </div>
 
@@ -22,7 +22,9 @@
       <div class="details-row">
         <strong>Budget</strong>
 
-        <span> ₹{{ campaign.budgetPerInfluencer }} </span>
+        <span>
+          {{ campaign.budgetPerInfluencer | currency: 'INR' }}
+        </span>
       </div>
 
       <div class="details-row">
@@ -34,9 +36,7 @@
       <div class="details-row">
         <strong>Status</strong>
 
-        <span>
-          {{ campaign.status }}
-        </span>
+        <span> {{ campaign.status | titlecase }} </span>
       </div>
 
       <div class="details-row">
@@ -50,6 +50,29 @@
 
     @if (user?.role === 'INFLUENCER') {
       <ion-button expand="block" color="primary" (click)="applyToCampaign()"> Apply Now </ion-button>
+    }
+  }
+  @if (user?.role === 'BRAND') {
+    <ion-button expand="block" color="secondary" (click)="viewApplications()"> View Applications </ion-button>
+  }
+  @if (applications.length > 0) {
+    <div class="page-header">
+      <h2>Applications</h2>
+
+      <p>Review influencer applications</p>
+    </div>
+    @for (application of applications; track application._id) {
+      <div class="campaign-card">
+        <p>
+          Applicant:
+          {{ application.influencerId?.fullName }}
+        </p>
+
+        <p>
+          Status:
+          {{ application.status | titlecase }}
+        </p>
+      </div>
     }
   }
 </ion-content>

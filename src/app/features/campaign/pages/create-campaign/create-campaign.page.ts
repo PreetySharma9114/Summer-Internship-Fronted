@@ -1,9 +1,8 @@
-import { CommonModule } from '@angular/common';
-
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CreateCampaignDto } from '../../dto/create-campaign.dto';
+import { Router } from '@angular/router';
+
 import {
   IonContent,
   IonItem,
@@ -15,15 +14,12 @@ import {
   IonDatetimeButton,
   IonModal,
   IonButton,
-  IonLabel,
 } from '@ionic/angular/standalone';
 
-import { Router } from '@angular/router';
-
 import { CampaignService } from '../../../../core/services/campaign.service';
-
 import { Industry } from '../../../../shared/enums/industry.enum';
 import { Platform } from '../../../../shared/enums/platform.enum';
+import { CreateCampaignDto } from '../../dto/create-campaign.dto';
 
 @Component({
   selector: 'app-create-campaign',
@@ -32,6 +28,7 @@ import { Platform } from '../../../../shared/enums/platform.enum';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    TitleCasePipe,
     IonContent,
     IonItem,
     IonInput,
@@ -42,7 +39,6 @@ import { Platform } from '../../../../shared/enums/platform.enum';
     IonDatetime,
     IonDatetimeButton,
     IonModal,
-    IonLabel,
   ],
 })
 export class CreateCampaignPage {
@@ -56,16 +52,12 @@ export class CreateCampaignPage {
 
   platforms = Object.values(Platform);
 
-  form = this.fb.nonNullable.group({
+  form = this.fb.group({
     title: ['', Validators.required],
-
     description: ['', Validators.required],
-
     category: ['', Validators.required],
-
-    platforms: this.fb.nonNullable.control<Platform[]>([], Validators.required),
+    platforms: this.fb.control<Platform[]>([], Validators.required),
     budgetPerInfluencer: [0, Validators.required],
-
     totalSlots: [1, Validators.required],
     startDate: [new Date().toISOString()],
     endDate: [new Date().toISOString()],
@@ -77,16 +69,7 @@ export class CreateCampaignPage {
       return;
     }
 
-    const payload: CreateCampaignDto = {
-      title: this.form.value.title!,
-      description: this.form.value.description!,
-      category: this.form.value.category as Industry,
-      platforms: this.form.value.platforms as Platform[],
-      budgetPerInfluencer: this.form.value.budgetPerInfluencer!,
-      totalSlots: this.form.value.totalSlots!,
-      startDate: this.form.value.startDate!,
-      endDate: this.form.value.endDate!,
-    };
+    const payload = this.form.getRawValue() as CreateCampaignDto;
 
     this.campaignService.createCampaign(payload).subscribe({
       next: () => {

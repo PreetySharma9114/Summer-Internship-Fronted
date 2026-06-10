@@ -4,28 +4,24 @@
   }
 
   @if (!loading) {
-
     <div class="page-header">
       <h1>My Applications</h1>
+
+      <p>Track the status of your campaign applications</p>
     </div>
-
+    @if (!loading && applications.length === 0) {
+      <p>No applications found.</p>
+    }
     @for (application of applications; track application._id) {
-
       @if (application.campaignId) {
-
         <div class="campaign-card">
           <h3>
             {{ application.campaignId.title }}
           </h3>
 
-          <p>
-            Status: {{ application.status }}
-          </p>
+          <p>Status: {{ application.status | titlecase }}</p>
         </div>
-
       }
-
     }
-
   }
 </ion-content>

@@ -10,8 +10,9 @@
   }
 
   @if (!loading && campaigns.length === 0) {
-    <p>No campaigns found.</p>
+    <p>No campaigns created yet.</p>
   }
+  
 
   @if (!loading && campaigns.length > 0) {
     @for (campaign of campaigns; track campaign._id) {

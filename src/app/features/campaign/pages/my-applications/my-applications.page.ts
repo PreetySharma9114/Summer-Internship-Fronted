@@ -1,7 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { IonContent, IonSpinner } from '@ionic/angular/standalone';
 
 import { ApplicationService } from '../../../../core/services/application.service';
@@ -10,7 +9,7 @@ import { ApplicationService } from '../../../../core/services/application.servic
   selector: 'app-my-applications',
   standalone: true,
   templateUrl: './my-applications.page.html',
-  imports: [CommonModule, IonContent, IonSpinner],
+  imports: [CommonModule, IonContent, IonSpinner, TitleCasePipe],
 })
 export class MyApplicationsPage implements OnInit {
   private applicationService = inject(ApplicationService);

@@ -1,8 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ProfileStatus } from '../../enums/profile-status.enum';
-import { CommonModule } from '@angular/common';
-import { getValidationMessage } from '../../../../shared/helpers/validation-message.helper';
+import { CommonModule, TitleCasePipe } from '@angular/common';import { getValidationMessage } from '../../../../shared/helpers/validation-message.helper';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { validateImageFile } from '../../../../shared/helpers/file-validation.helper';
 import {
@@ -40,7 +39,7 @@ import { getErrorMessage } from '../../../../shared/helpers/error-message.helper
   imports: [
     CommonModule,
     ReactiveFormsModule,
-
+    TitleCasePipe,
     IonContent,
     IonItem,
     IonInput,

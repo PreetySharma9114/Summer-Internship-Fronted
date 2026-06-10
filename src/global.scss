@@ -67,13 +67,16 @@ p {
 }
 
 /* FORM */
-
 .input-group {
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 
 .input-group label {
-  display: none;
+  display: block;
+  margin-bottom: 6px;
+
+  font-size: 14px;
+  font-weight: 600;
 }
 
 /* IONIC INPUTS */
@@ -82,9 +85,11 @@ ion-item {
   --background: #fafafa;
   --padding-start: 12px;
   --inner-padding-end: 12px;
+
   border: 1px solid var(--ion-border-color);
-  border-radius: 8px;
-  min-height: 44px;
+  border-radius: 10px;
+
+  min-height: 48px;
 }
 
 ion-input {
@@ -95,6 +100,13 @@ ion-input {
 
 ion-select {
   font-size: 14px;
+}
+ion-textarea {
+  --placeholder-color: #8e8e93;
+  --placeholder-opacity: 1;
+
+  font-size: 14px;
+  min-height: 120px;
 }
 
 /* BUTTONS */

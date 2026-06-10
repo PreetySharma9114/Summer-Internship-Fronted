@@ -11,7 +11,7 @@
     </div>
 
     <div class="campaign-category">
-      {{ campaign.category }}
+      {{ campaign.category | titlecase }}
     </div>
   </div>
 
@@ -28,7 +28,9 @@
   <div class="campaign-footer">
     <div>
       <strong>Budget</strong>
-      <p>₹{{ campaign.budgetPerInfluencer }}</p>
+      <p>
+        {{ campaign.budgetPerInfluencer | currency: 'INR' }}
+      </p>
     </div>
 
     <div>
@@ -38,7 +40,9 @@
 
     <div>
       <strong>Status</strong>
-      <p>{{ campaign.status }}</p>
-    </div>
-  </div>
+      <p>
+        {{ campaign.status | titlecase }}
+      </p>
+ </div>
+</div>
 </ion-card>

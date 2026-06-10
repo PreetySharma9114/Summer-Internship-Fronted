@@ -10,21 +10,35 @@
       </div>
 
       <form [formGroup]="brandProfileForm" (ngSubmit)="submitProfile()">
-        <div class="upload-box">
-          @if (logoPreview) {
-            <img [src]="logoPreview" class="profile-preview" />
-          }
+        <div class="input-group full-width">
+          <label>Brand Logo</label>
 
-          <input type="file" accept="image/*" (change)="onLogoChange($event)" />
+          <div class="upload-box">
+            @if (logoPreview) {
+              <img [src]="logoPreview" class="profile-preview" />
+            }
+
+            <input
+              type="file"
+              accept="image/*"
+              (change)="onLogoChange($event)"
+            />
+          </div>
         </div>
 
         <div class="profile-grid">
           <div class="input-group">
+            <label>Brand Name</label>
+
             <ion-item lines="none">
-              <ion-input placeholder="Brand Name" formControlName="brandName"> </ion-input>
+              <ion-input
+                placeholder="Enter brand name"
+                formControlName="brandName">
+              </ion-input>
             </ion-item>
 
-            @if (brandProfileForm.get('brandName')?.invalid && brandProfileForm.get('brandName')?.touched) {
+            @if (brandProfileForm.get('brandName')?.invalid &&
+            brandProfileForm.get('brandName')?.touched) {
               <small>
                 {{ getValidationMessage(brandProfileForm.get('brandName')) }}
               </small>
@@ -32,11 +46,17 @@
           </div>
 
           <div class="input-group">
+            <label>Website</label>
+
             <ion-item lines="none">
-              <ion-input placeholder="Website" formControlName="website"> </ion-input>
+              <ion-input
+                placeholder="Enter website URL"
+                formControlName="website">
+              </ion-input>
             </ion-item>
 
-            @if (brandProfileForm.get('website')?.touched && brandProfileForm.get('website')?.invalid) {
+            @if (brandProfileForm.get('website')?.invalid &&
+            brandProfileForm.get('website')?.touched) {
               <small>
                 {{ getValidationMessage(brandProfileForm.get('website')) }}
               </small>
@@ -44,11 +64,18 @@
           </div>
 
           <div class="input-group full-width">
+            <label>Brand Description</label>
+
             <ion-item lines="none">
-              <ion-textarea placeholder="Brand Description" formControlName="description"> </ion-textarea>
+              <ion-textarea
+                rows="4"
+                placeholder="Tell creators about your brand"
+                formControlName="description">
+              </ion-textarea>
             </ion-item>
 
-            @if (brandProfileForm.get('description')?.touched && brandProfileForm.get('description')?.invalid) {
+            @if (brandProfileForm.get('description')?.invalid &&
+            brandProfileForm.get('description')?.touched) {
               <small>
                 {{ getValidationMessage(brandProfileForm.get('description')) }}
               </small>
@@ -56,17 +83,24 @@
           </div>
 
           <div class="input-group">
+            <label>Industry</label>
+
             <ion-item lines="none">
-              <ion-select placeholder="Select Industry" formControlName="industry">
+              <ion-select
+                placeholder="Select industry"
+                formControlName="industry">
+
                 @for (industry of industries; track industry) {
                   <ion-select-option [value]="industry">
-                    {{ industry }}
+                    {{ industry | titlecase }}
                   </ion-select-option>
                 }
+
               </ion-select>
             </ion-item>
 
-            @if (brandProfileForm.get('industry')?.invalid && brandProfileForm.get('industry')?.touched) {
+            @if (brandProfileForm.get('industry')?.invalid &&
+            brandProfileForm.get('industry')?.touched) {
               <small>
                 {{ getValidationMessage(brandProfileForm.get('industry')) }}
               </small>
@@ -74,18 +108,28 @@
           </div>
 
           <div class="input-group">
+            <label>Instagram Username</label>
+
             <ion-item lines="none">
-              <ion-input placeholder="Instagram Username" formControlName="instagramUsername"> </ion-input>
+              <ion-input
+                placeholder="Enter Instagram username"
+                formControlName="instagramUsername">
+              </ion-input>
             </ion-item>
           </div>
         </div>
 
-        <ion-button expand="block" type="submit" [disabled]="loading">
+        <ion-button
+          expand="block"
+          type="submit"
+          [disabled]="loading">
+
           @if (loading) {
-            <ion-spinner name="crescent"> </ion-spinner>
+            <ion-spinner name="crescent"></ion-spinner>
           } @else {
             Complete Profile
           }
+
         </ion-button>
       </form>
     </div>
