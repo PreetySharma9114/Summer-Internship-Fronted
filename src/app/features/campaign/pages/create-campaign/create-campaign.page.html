@@ -14,7 +14,10 @@
           <label>Campaign Title</label>
 
           <ion-item lines="none">
-            <ion-input placeholder="Enter campaign title" formControlName="title"> </ion-input>
+            <ion-input
+              placeholder="Enter campaign title"
+              formControlName="title">
+            </ion-input>
           </ion-item>
         </div>
 
@@ -22,7 +25,10 @@
           <label>Description</label>
 
           <ion-item lines="none">
-            <ion-textarea placeholder="Describe your campaign" formControlName="description"> </ion-textarea>
+            <ion-textarea
+              placeholder="Describe your campaign"
+              formControlName="description">
+            </ion-textarea>
           </ion-item>
         </div>
 
@@ -31,12 +37,16 @@
             <label>Category</label>
 
             <ion-item lines="none">
-              <ion-select placeholder="Select category" formControlName="category">
+              <ion-select
+                placeholder="Select category"
+                formControlName="category">
+
                 @for (industry of industries; track industry) {
                   <ion-select-option [value]="industry">
                     {{ industry | titlecase }}
                   </ion-select-option>
                 }
+
               </ion-select>
             </ion-item>
           </div>
@@ -45,47 +55,18 @@
             <label>Platforms</label>
 
             <ion-item lines="none">
-              <div class="input-group">
-                <label>Platforms</label>
+              <ion-select
+                multiple="true"
+                placeholder="Select platforms"
+                formControlName="platforms">
 
                 @for (platform of platforms; track platform) {
-                  <ion-item lines="none">
-                    <ion-checkbox
-                      [checked]="isPlatformSelected(platform)"
-                      (ionChange)="togglePlatform(platform, $event.detail.checked)"
-                    >
-                    </ion-checkbox>
-
-                    <span>
-                      {{ platform | titlecase }}
-                    </span>
-                  </ion-item>
+                  <ion-select-option [value]="platform">
+                    {{ platform | titlecase }}
+                  </ion-select-option>
                 }
-              </div>
-            </ion-item>
-          </div>
 
-          <div class="input-group">
-            <label>Platforms</label>
-
-            <ion-item lines="none">
-              <div class="input-group">
-                <label>Platforms</label>
-
-                @for (platform of platforms; track platform) {
-                  <ion-item lines="none">
-                    <ion-checkbox
-                      [checked]="isPlatformSelected(platform)"
-                      (ionChange)="togglePlatform(platform, $event.detail.checked)"
-                    >
-                    </ion-checkbox>
-
-                    <span>
-                      {{ platform | titlecase }}
-                    </span>
-                  </ion-item>
-                }
-              </div>
+              </ion-select>
             </ion-item>
           </div>
 
@@ -93,15 +74,11 @@
             <label>Budget Per Influencer</label>
 
             <ion-item lines="none">
-              <ion-input type="number" placeholder="Enter budget" formControlName="budgetPerInfluencer"> </ion-input>
-            </ion-item>
-          </div>
-
-          <div class="input-group">
-            <label>Budget Per Influencer</label>
-
-            <ion-item lines="none">
-              <ion-input type="number" placeholder="Enter budget" formControlName="budgetPerInfluencer"> </ion-input>
+              <ion-input
+                type="number"
+                placeholder="Enter budget"
+                formControlName="budgetPerInfluencer">
+              </ion-input>
             </ion-item>
           </div>
 
@@ -109,7 +86,11 @@
             <label>Total Slots</label>
 
             <ion-item lines="none">
-              <ion-input type="number" placeholder="Enter total slots" formControlName="totalSlots"> </ion-input>
+              <ion-input
+                type="number"
+                placeholder="Enter total slots"
+                formControlName="totalSlots">
+              </ion-input>
             </ion-item>
           </div>
 
@@ -117,7 +98,8 @@
             <label>Start Date</label>
 
             <ion-item lines="none">
-              <ion-datetime-button datetime="startDate"></ion-datetime-button>
+              <ion-datetime-button datetime="startDate">
+              </ion-datetime-button>
             </ion-item>
           </div>
 
@@ -125,29 +107,43 @@
             <label>End Date</label>
 
             <ion-item lines="none">
-              <ion-datetime-button datetime="endDate"></ion-datetime-button>
+              <ion-datetime-button datetime="endDate">
+              </ion-datetime-button>
             </ion-item>
           </div>
         </div>
 
         <ion-modal keepContentsMounted="true">
           <ng-template>
-            <ion-datetime id="startDate" presentation="date" formControlName="startDate"> </ion-datetime>
+            <ion-datetime
+              id="startDate"
+              presentation="date"
+              formControlName="startDate">
+            </ion-datetime>
           </ng-template>
         </ion-modal>
 
         <ion-modal keepContentsMounted="true">
           <ng-template>
-            <ion-datetime id="endDate" presentation="date" formControlName="endDate"> </ion-datetime>
+            <ion-datetime
+              id="endDate"
+              presentation="date"
+              formControlName="endDate">
+            </ion-datetime>
           </ng-template>
         </ion-modal>
 
-        <ion-button expand="block" type="submit" [disabled]="loading">
+        <ion-button
+          expand="block"
+          type="submit"
+          [disabled]="loading">
+
           @if (loading) {
             <ion-spinner name="crescent"></ion-spinner>
           } @else {
             Create Campaign
           }
+
         </ion-button>
       </form>
     </div>

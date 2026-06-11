@@ -91,14 +91,6 @@ export class CampaignDetailsPage implements OnInit {
     });
   }
 
-getApplicantName(application: Application): string {
-  if (typeof application.influencerId === 'string') {
-    return '';
-  }
-
-  return application.influencerId.fullName;
-}
-
 updateApplicationStatus(
   applicationId: string,
   status: ApplicationStatus,

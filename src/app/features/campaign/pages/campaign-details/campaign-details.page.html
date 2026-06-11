@@ -65,9 +65,11 @@
       <div class="campaign-card">
         <p>
           Applicant:
-          {{ getApplicantName(application) }}
-        </p>
 
+          @if (typeof application.influencerId !== 'string') {
+            {{ application.influencerId.fullName || application.influencerId.brandName }}
+          }
+        </p>
         <p>
           Status:
           {{ application.status | titlecase }}

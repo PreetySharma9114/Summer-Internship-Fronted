@@ -8,7 +8,8 @@ export interface Application {
     | string
     | {
         _id: string;
-        fullName: string;
+        fullName?: string;
+        brandName?: string;
       };
 
   campaignId: Campaign | null;
