@@ -1,7 +1,11 @@
 <ion-card class="campaign-card" (click)="viewDetails()">
   <div class="campaign-header">
     <div class="campaign-logo">
-      {{ campaign.title.charAt(0) }}
+      @if (campaign.brand?.logo) {
+        <img [src]="campaign.brand?.logo" [alt]="campaign.brand?.brandName" class="brand-logo-image" />
+      } @else {
+        {{ campaign.title.charAt(0) }}
+      }
     </div>
 
     <div class="campaign-brand-info">
@@ -43,6 +47,6 @@
       <p>
         {{ campaign.status | titlecase }}
       </p>
- </div>
-</div>
+    </div>
+  </div>
 </ion-card>

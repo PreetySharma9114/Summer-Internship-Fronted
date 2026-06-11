@@ -50,10 +50,7 @@ export class VerifyOtpPage implements OnInit {
     const queryId = this.route.snapshot.queryParams['id'];
 
     const storedId = this.authService.getRegistrationId();
-    console.log('QUERY ID:', queryId);
-    console.log('STORED ID:', storedId);
     this.userId = queryId || storedId || '';
-    console.log('USER ID:', this.userId);
     if (!this.userId) {
       this.router.navigate(['/register']);
 

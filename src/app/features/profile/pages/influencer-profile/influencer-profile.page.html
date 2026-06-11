@@ -57,24 +57,20 @@
             </small>
           }
         </div>
-
         <div class="input-group">
-          <label>Niche</label>
+          <label>Niches</label>
 
-          <ion-item lines="none">
-            <ion-select placeholder="Select niche" formControlName="niche">
-              @for (niche of niches; track niche) {
-                <ion-select-option [value]="niche">
-                  {{ niche }}
-                </ion-select-option>
-              }
-            </ion-select>
-          </ion-item>
+          @for (niche of niches; track niche) {
+            <ion-item lines="none">
+              <ion-checkbox [checked]="isNicheSelected(niche)" (ionChange)="toggleNiche(niche, $event.detail.checked)">
+              </ion-checkbox>
 
-          @if (influencerProfileForm.get('niche')?.invalid && influencerProfileForm.get('niche')?.touched) {
-            <small>
-              {{ getValidationMessage(influencerProfileForm.get('niche')) }}
-            </small>
+              <span>{{ niche }}</span>
+            </ion-item>
+          }
+
+          @if (influencerProfileForm.get('niches')?.invalid && influencerProfileForm.get('niches')?.touched) {
+            <small>Select at least one niche</small>
           }
         </div>
 
@@ -98,8 +94,18 @@
           <label>Followers Count</label>
 
           <ion-item lines="none">
-            <ion-input type="number" placeholder="Enter followers count" formControlName="followersCount"> </ion-input>
+            <ion-input type="number" placeholder="Enter followers count" formControlName="instagramFollowers">
+            </ion-input>
           </ion-item>
+
+          @if (
+            influencerProfileForm.get('instagramFollowers')?.invalid &&
+            influencerProfileForm.get('instagramFollowers')?.touched
+          ) {
+            <small>
+              {{ getValidationMessage(influencerProfileForm.get('instagramFollowers')) }}
+            </small>
+          }
         </div>
 
         <ion-button expand="block" type="submit" [disabled]="loading">

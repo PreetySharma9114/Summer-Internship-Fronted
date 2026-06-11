@@ -4,9 +4,9 @@ export interface InfluencerProfile {
   fullName: string;
   username: string;
   bio: string;
-  niche: InfluencerNiche;
+  niches: InfluencerNiche[];
   instagramUsername: string;
   youtubeUsername: string;
-  followersCount: number;
+  instagramFollowers: number;
   profileImage?: File;
 }

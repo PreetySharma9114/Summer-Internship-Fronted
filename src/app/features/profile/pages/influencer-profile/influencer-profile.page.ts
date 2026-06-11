@@ -10,10 +10,9 @@ import {
   IonContent,
   IonInput,
   IonItem,
-  IonSelect,
-  IonSelectOption,
   IonTextarea,
   IonSpinner,
+  IonCheckbox,
 } from '@ionic/angular/standalone';
 
 import { Router } from '@angular/router';
@@ -44,8 +43,7 @@ import { validateImageFile } from '../../../../shared/helpers/file-validation.he
     IonInput,
     IonTextarea,
     IonButton,
-    IonSelect,
-    IonSelectOption,
+    IonCheckbox,
     IonSpinner,
   ],
 })
@@ -80,13 +78,13 @@ export class InfluencerProfilePage implements OnInit {
 
       bio: ['', ProfileValidators.bio],
 
-      niche: ['', Validators.required],
+      niches: [[], Validators.required],
 
       instagramUsername: [''],
 
       youtubeUsername: [''],
 
-      instagramFollowers: ['', Validators.required],
+      instagramFollowers: [0, ProfileValidators.instagramFollowers],
     });
   }
 
@@ -140,5 +138,37 @@ export class InfluencerProfilePage implements OnInit {
           );
         },
       });
+      
   }
+  isNicheSelected(niche: InfluencerNiche): boolean {
+  const selectedNiches =
+    this.influencerProfileForm.get('niches')?.value ?? [];
+
+  return selectedNiches.includes(niche);
+}
+toggleNiche(
+  niche: InfluencerNiche,
+  checked: boolean,
+): void {
+  const control =
+    this.influencerProfileForm.get('niches');
+
+  const selectedNiches: InfluencerNiche[] = [
+    ...(control?.value ?? []),
+  ];
+
+  if (checked) {
+    selectedNiches.push(niche);
+  } else {
+    const index =
+      selectedNiches.indexOf(niche);
+
+    if (index > -1) {
+      selectedNiches.splice(index, 1);
+    }
+  }
+
+  control?.setValue(selectedNiches);
+  control?.markAsTouched();
+}
 }

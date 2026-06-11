@@ -6,7 +6,10 @@ export interface Campaign {
   _id: string;
 
   brandId: string;
-
+  brand?: {
+    brandName: string;
+    logo?: string;
+  };
   title: string;
 
   description: string;

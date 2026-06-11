@@ -30,7 +30,7 @@ export const ProfileValidators = {
     Validators.minLength(VALIDATION.BIO_MIN_LENGTH),
     Validators.maxLength(VALIDATION.BIO_MAX_LENGTH),
   ],
-  niche: [Validators.required],
+  niches: [Validators.required],
   industry: [Validators.required],
-  followersCount: [Validators.required],
+  instagramFollowers: [Validators.required],
 };

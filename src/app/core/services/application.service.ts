@@ -2,7 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-
+import { Application } from '../../shared/interfaces/application.interface';
+import { ApplicationStatus } from '../../shared/enums/application-status.enum';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -13,30 +14,50 @@ export class ApplicationService {
 
   private apiUrl = `${environment.apiUrl}/applications`;
 
-  applyToCampaign(campaignId: string): Observable<any> {
-    return this.http.post(
-      `${this.apiUrl}/campaigns/${campaignId}/apply`,
-      {},
-    );
+  applyToCampaign(campaignId: string): Observable<{
+    success: boolean;
+    message: string;
+  }> {
+    return this.http.post<{
+      success: boolean;
+      message: string;
+    }>(`${this.apiUrl}/campaigns/${campaignId}/apply`, {});
   }
 
-  getMyApplications(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/my`);
+  getMyApplications(): Observable<{
+    success: boolean;
+    message: string;
+    data: Application[];
+  }> {
+    return this.http.get<{
+      success: boolean;
+      message: string;
+      data: Application[];
+    }>(`${this.apiUrl}/my`);
   }
 
-  getCampaignApplications(campaignId: string): Observable<any> {
-    return this.http.get(
-      `${this.apiUrl}/campaigns/${campaignId}`,
-    );
+  getCampaignApplications(campaignId: string): Observable<{
+    success: boolean;
+    message: string;
+    data: Application[];
+  }> {
+    return this.http.get<{
+      success: boolean;
+      message: string;
+      data: Application[];
+    }>(`${this.apiUrl}/campaigns/${campaignId}`);
   }
 
   updateApplicationStatus(
     applicationId: string,
-    status: string,
-  ): Observable<any> {
-    return this.http.patch(
-      `${this.apiUrl}/${applicationId}/status`,
-      { status },
-    );
+    status: ApplicationStatus,
+  ): Observable<{
+    success: boolean;
+    message: string;
+  }> {
+    return this.http.patch<{
+      success: boolean;
+      message: string;
+    }>(`${this.apiUrl}/${applicationId}/status`, { status });
   }
 }

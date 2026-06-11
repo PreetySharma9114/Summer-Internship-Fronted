@@ -81,11 +81,9 @@ export class LoginPage implements OnInit {
       )
       .subscribe({
         next: async () => {
-          console.log('LOGIN RESPONSE', Response);
           await this.toastService.showSuccessToast('Login successful');
 
           const user = this.authService.getCurrentUser();
-          console.log('CURRENT USER',user);
           if (!user) {
             return;
           }

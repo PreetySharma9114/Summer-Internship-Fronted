@@ -2,7 +2,7 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { IonContent, IonSpinner } from '@ionic/angular/standalone';
-
+import { Application } from '../../../../shared/interfaces/application.interface';
 import { ApplicationService } from '../../../../core/services/application.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class MyApplicationsPage implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  applications: any[] = [];
+  applications: Application[] = [];
 
   loading = true;
 
@@ -32,7 +32,6 @@ export class MyApplicationsPage implements OnInit {
         },
 
         error: (error) => {
-          console.log('APPLICATIONS ERROR', error);
           this.loading = false;
         },
       });

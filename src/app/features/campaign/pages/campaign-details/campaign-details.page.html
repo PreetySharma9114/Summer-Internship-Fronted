@@ -65,13 +65,31 @@
       <div class="campaign-card">
         <p>
           Applicant:
-          {{ application.influencerId?.fullName }}
+          {{ getApplicantName(application) }}
         </p>
 
         <p>
           Status:
           {{ application.status | titlecase }}
         </p>
+
+        @if (user?.role === 'BRAND' && application.status === applicationStatus.PENDING) {
+          <ion-button
+            size="small"
+            color="success"
+            (click)="updateApplicationStatus(application._id, applicationStatus.ACCEPTED)"
+          >
+            Accept
+          </ion-button>
+
+          <ion-button
+            size="small"
+            color="danger"
+            (click)="updateApplicationStatus(application._id, applicationStatus.REJECTED)"
+          >
+            Reject
+          </ion-button>
+        }
       </div>
     }
   }
