@@ -1,8 +1,8 @@
 <ion-card class="campaign-card" (click)="viewDetails()">
   <div class="campaign-header">
     <div class="campaign-logo">
-      @if (campaign.brand?.logo) {
-        <img [src]="campaign.brand?.logo" [alt]="campaign.brand?.brandName" class="brand-logo-image" />
+      @if (campaign.brandId.logo) {
+        <img [src]="campaign.brandId.logo" [alt]="campaign.brandId.brandName" class="brand-logo-image" />
       } @else {
         {{ campaign.title.charAt(0) }}
       }

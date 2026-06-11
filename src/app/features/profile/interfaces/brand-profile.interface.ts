@@ -11,5 +11,5 @@ export interface BrandProfile {
 
   instagramUsername: string;
 
-  logo?: File;
+  logo?: string;
 }

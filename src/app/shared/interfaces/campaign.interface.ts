@@ -1,3 +1,4 @@
+import { BrandProfile } from 'src/app/features/profile/interfaces/brand-profile.interface';
 import { CampaignStatus } from '../enums/campaign-status.enum';
 import { Industry } from '../enums/industry.enum';
 import { Platform } from '../enums/platform.enum';
@@ -5,11 +6,8 @@ import { Platform } from '../enums/platform.enum';
 export interface Campaign {
   _id: string;
 
-  brandId: string;
-  brand?: {
-    brandName: string;
-    logo?: string;
-  };
+  brandId: BrandProfile;
+
   title: string;
 
   description: string;
